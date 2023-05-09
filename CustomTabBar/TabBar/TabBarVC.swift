@@ -7,20 +7,36 @@
 
 import UIKit
 
-class TaaBBarVC: UITabBar {
+class TabBarVC: UITabBar {
     
     private var shapeLayer: CALayer?
     
     private func addShape() {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = createPath()
+        shapeLayer.strokeColor = UIColor.clear.cgColor
+        shapeLayer.fillColor = UIColor(named: "dark-brown-2")?.cgColor
+        shapeLayer.lineWidth = 1
+        shapeLayer.shadowOffset = CGSize(width: 0, height: 0)
+        shapeLayer.shadowRadius = 10
+        shapeLayer.shadowColor = UIColor(named: "dark-brown-2")?.cgColor
+        shapeLayer.shadowOpacity = 0.3
+        
+        if let oldShapeLayer = self.shapeLayer {
+            self.layer.replaceSublayer(oldShapeLayer, with: shapeLayer)
+        } else {
+            self.layer.insertSublayer(shapeLayer, at: 0)
+        }
+        
+        self.shapeLayer = shapeLayer
     }
-    
+      
     override func draw(_ rect: CGRect) {
-        //super.draw(rect)
+        super.draw(rect)
         self.addShape()
         unselectedItemTintColor = .white
         tintColor = UIColor(named: "dark-brown")
+        self.layer.masksToBounds = false
     }
     
     private func createPath() -> CGPath {
